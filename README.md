@@ -36,4 +36,4 @@ El sistema está desplegado en PythonAnywhere:
 
 ## 👨‍💻 Autor
 
-[TU NOMBRE] - Servicios Web 2026
+Montaño Oquita Gabriel Alejandro - Servicios Web 2026
