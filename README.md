@@ -25,7 +25,7 @@ Ver archivo `GUIA_INSTALACION_COMPLETA.html` para instrucciones detalladas.
 ## 🌐 Demo en Producción
 
 El sistema está desplegado en PythonAnywhere:
-- URL: [TU_URL_PYTHONANYWHERE]
+- URL: https://montanooquitabackend.pythonanywhere.com/
 - Usuario Admin: admin / admin123
 
 ## 📖 Documentación
