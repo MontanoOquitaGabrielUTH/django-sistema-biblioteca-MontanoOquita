@@ -1,0 +1,126 @@
+{
+  "info": {
+    "_postman_id": "4d122bd8-6563-4640-b84f-d5b59abfb8ac",
+    "name": "Biblioteca API - SOAP",
+    "description": "Pruebas de servicio SOAP",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52385727",
+    "_collection_link": "https://go.postman.co/collection/52385727-4d122bd8-6563-4640-b84f-d5b59abfb8ac?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "SOAP - Listar libros",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "text/xml; charset=utf-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"\r\n               xmlns:bib=\"biblioteca.soap.services\">\r\n    <soap:Body>\r\n        <bib:listar_libros/>\r\n    </soap:Body>\r\n</soap:Envelope>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/soap/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "soap",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SOAP - Obtener libro",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "text/xml; charset=utf-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"\r\n               xmlns:bib=\"biblioteca.soap.services\">\r\n    <soap:Body>\r\n        <bib:obtener_libro>\r\n            <bib:libro_id>1</bib:libro_id>\r\n        </bib:obtener_libro>\r\n    </soap:Body>\r\n</soap:Envelope>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/soap/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "soap",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SOAP - Crear prestamo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "text/xml",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"\r\n               xmlns:bib=\"biblioteca.soap.services\">\r\n    <soap:Body>\r\n        <bib:crear_prestamo>\r\n            <bib:libro_id>2</bib:libro_id>\r\n            <bib:usuario_id>1</bib:usuario_id>\r\n            <bib:dias_prestamo>14</bib:dias_prestamo>\r\n        </bib:crear_prestamo>\r\n    </soap:Body>\r\n</soap:Envelope>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/soap/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "soap",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

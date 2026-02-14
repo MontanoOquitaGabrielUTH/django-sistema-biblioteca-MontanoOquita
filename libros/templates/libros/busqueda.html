@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Buscar Libros - Biblioteca UTH{% endblock %}
+
+{% block content %}
+<style>
+    .search-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+    .search-page h1 {
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .search-form-container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        margin-bottom: 40px;
+    }
+    .search-input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .search-input-group input[type="text"] {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+    }
+    .search-input-group input[type="text"]:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .search-filters {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .search-filters select {
+        padding: 10px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: all 0.3s ease;
+    }
+    .search-filters select:focus {
+        border-color: #667eea;
+        outline: none;
+    }
+    .search-filters label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+        font-weight: 600;
+    }
+    .search-filters input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+    #search-results h2 {
+        color: #333;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    #search-results p {
+        color: #666;
+        margin-bottom: 30px;
+    }
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+    .no-results p:first-child {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+    .search-suggestions {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+    .search-suggestions h3 {
+        color: #667eea;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+    .search-suggestions ul {
+        list-style: none;
+        padding: 0;
+    }
+    .search-suggestions li {
+        padding: 12px 0;
+        padding-left: 30px;
+        color: #666;
+        line-height: 1.6;
+        position: relative;
+    }
+    .search-suggestions li:before {
+        content: "💡";
+        position: absolute;
+        left: 0;
+        font-size: 1.2em;
+    }
+    .libros-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    .libro-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+    .libro-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .libro-imagen {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .libro-placeholder {
+        font-size: 4em;
+        opacity: 0.8;
+    }
+    .libro-info {
+        padding: 20px;
+    }
+    .libro-info h3 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+        min-height: 50px;
+    }
+    .libro-autor {
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    .libro-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    .badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+    .badge-disponible {
+        background: #e8f5e9;
+        color: #4caf50;
+    }
+    @media (max-width: 768px) {
+        .search-input-group {
+            flex-direction: column;
+        }
+        .search-filters {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .libros-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="search-page">
+        <h1>🔍 Buscar Libros</h1>
+        
+        <div class="search-form-container">
+            <form method="get" id="search-form">
+                <div class="search-input-group">
+                    <input type="text" name="q" placeholder="Buscar por título, autor o ISBN..." 
+                           value="{{ query }}" id="search-input">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+                
+                <div class="search-filters">
+                    <select name="categoria">
+                        <option value="">Todas las categorías</option>
+                        {% for cat in categorias %}
+                        <option value="{{ cat.id }}">{{ cat.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <select name="autor">
+                        <option value="">Todos los autores</option>
+                        {% for autor in autores %}
+                        <option value="{{ autor.id }}">{{ autor.nombre_completo }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <label>
+                        <input type="checkbox" name="disponible" value="1">
+                        Solo disponibles
+                    </label>
+                </div>
+            </form>
+        </div>
+        
+        <div id="search-results">
+            {% if query %}
+                <h2>Resultados para "{{ query }}"</h2>
+                
+                {% if resultados %}
+                    <p>Se encontraron {{ resultados|length }} libro(s)</p>
+                    
+                    <div class="libros-grid">
+                        {% for libro in resultados %}
+                        <div class="libro-card">
+                            <div class="libro-imagen">
+                                <div class="libro-placeholder">📖</div>
+                            </div>
+                            <div class="libro-info">
+                                <h3>{{ libro.titulo }}</h3>
+                                <p class="libro-autor">{{ libro.autor.nombre }}</p>
+                                <div class="libro-meta">
+                                    <span class="badge">{{ libro.categoria.nombre }}</span>
+                                    {% if libro.stock_disponible > 0 %}
+                                        <span class="badge badge-disponible">Disponible</span>
+                                    {% endif %}
+                                </div>
+                                <a href="{% url 'detalle_libro' libro.id %}" class="btn">Ver</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-results">
+                        <p>😕 No se encontraron resultados para "{{ query }}"</p>
+                        <p>Intenta con otros términos de búsqueda.</p>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="search-suggestions">
+                    <h3>Sugerencias de búsqueda:</h3>
+                    <ul>
+                        <li>Busca por título: "Cien años de soledad"</li>
+                        <li>Busca por autor: "García Márquez"</li>
+                        <li>Busca por ISBN: "9780307474728"</li>
+                        <li>Usa filtros para refinar tu búsqueda</li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+// Búsqueda AJAX en tiempo real
+document.getElementById('search-input').addEventListener('input', function(e) {
+    const query = e.target.value;
+    if (query.length >= 3) {
+        // Realizar búsqueda AJAX
+        fetch(`/api/libros/?search=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                // Actualizar resultados dinámicamente
+                console.log('Resultados:', data);
+            });
+    }
+});
+</script>
+{% endblock %}
+{% endblock %}

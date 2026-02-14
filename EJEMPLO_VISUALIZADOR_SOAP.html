@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador SOAP - Obtener libro por ID (1)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .xml-container {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        pre {
+            margin: 0;
+            color: #f8f8f2;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .btn-copy {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            color: #667eea;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📡 Visualizador de Mensajes SOAP</h1>
+            <p>⏰ Generado: 03/02/2026 17:40:32</p>
+        </div>
+
+        <div style="padding: 40px;">
+            <div class="stats">
+                <div class="stat-card">
+                    <div>Tamaño Request</div>
+                    <div class="value">260</div>
+                    <div>bytes</div>
+                </div>
+                <div class="stat-card">
+                    <div>Tamaño Response</div>
+                    <div class="value">1760</div>
+                    <div>bytes</div>
+                </div>
+                <div class="stat-card">
+                    <div>Protocolo</div>
+                    <div class="value">SOAP</div>
+                    <div>1.1</div>
+                </div>
+                <div class="stat-card">
+                    <div>Formato</div>
+                    <div class="value">XML</div>
+                    <div>UTF-8</div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <div class="section-title">
+                    <span>📤 Solicitud SOAP (Request)</span>
+                    <button class="btn-copy" onclick="copiarTexto('request-xml')">📋 Copiar</button>
+                </div>
+                <div class="xml-container">
+                    <pre id="request-xml">&lt;soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;soap-env:Body&gt;
+    &lt;ns0:obtener_libro xmlns:ns0="biblioteca.soap.services"&gt;
+      &lt;ns0:libro_id&gt;1&lt;/ns0:libro_id&gt;
+    &lt;/ns0:obtener_libro&gt;
+  &lt;/soap-env:Body&gt;
+&lt;/soap-env:Envelope&gt;</pre>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-title">
+                    <span>📥 Respuesta SOAP (Response)</span>
+                    <button class="btn-copy" onclick="copiarTexto('response-xml')">📋 Copiar</button>
+                </div>
+                <div class="xml-container">
+                    <pre id="response-xml">&lt;soap11env:Envelope xmlns:soap11env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="biblioteca.soap.services" xmlns:s0="libros.soap_services"&gt;
+  &lt;soap11env:Body&gt;
+    &lt;tns:obtener_libroResponse&gt;
+      &lt;tns:obtener_libroResult&gt;
+        &lt;s0:id&gt;1&lt;/s0:id&gt;
+        &lt;s0:titulo&gt;Cien años de soledad&lt;/s0:titulo&gt;
+        &lt;s0:isbn&gt;9780307474728&lt;/s0:isbn&gt;
+        &lt;s0:numero_paginas&gt;471&lt;/s0:numero_paginas&gt;
+        &lt;s0:idioma&gt;Español&lt;/s0:idioma&gt;
+        &lt;s0:descripcion&gt;Obra maestra del realismo mágico.&lt;/s0:descripcion&gt;
+        &lt;s0:estado&gt;prestado&lt;/s0:estado&gt;
+        &lt;s0:stock_total&gt;5&lt;/s0:stock_total&gt;
+        &lt;s0:stock_disponible&gt;0&lt;/s0:stock_disponible&gt;
+        &lt;s0:autor&gt;
+          &lt;s0:id&gt;1&lt;/s0:id&gt;
+          &lt;s0:nombre&gt;Gabriel&lt;/s0:nombre&gt;
+          &lt;s0:apellido&gt;García Márquez&lt;/s0:apellido&gt;
+          &lt;s0:nacionalidad&gt;Colombiano&lt;/s0:nacionalidad&gt;
+          &lt;s0:biografia&gt;Premio Nobel de Literatura 1982.&lt;/s0:biografia&gt;
+        &lt;/s0:autor&gt;
+        &lt;s0:editorial&gt;
+          &lt;s0:id&gt;1&lt;/s0:id&gt;
+          &lt;s0:nombre&gt;Editorial Sudamericana&lt;/s0:nombre&gt;
+          &lt;s0:pais&gt;Argentina&lt;/s0:pais&gt;
+        &lt;/s0:editorial&gt;
+        &lt;s0:categoria&gt;
+          &lt;s0:id&gt;1&lt;/s0:id&gt;
+          &lt;s0:nombre&gt;Ficción&lt;/s0:nombre&gt;
+        &lt;/s0:categoria&gt;
+      &lt;/tns:obtener_libroResult&gt;
+    &lt;/tns:obtener_libroResponse&gt;
+  &lt;/soap11env:Body&gt;
+&lt;/soap11env:Envelope&gt;</pre>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #2d3436; color: white; padding: 20px; text-align: center;">
+            <p>🎓 Sistema de Biblioteca - Cliente SOAP Interactivo</p>
+            <p>📚 Guía de Servicios Web - 2026</p>
+        </div>
+    </div>
+
+    <script>
+        function copiarTexto(elementId) {
+            const elemento = document.getElementById(elementId);
+            const texto = elemento.textContent;
+            
+            navigator.clipboard.writeText(texto).then(() => {
+                alert('✅ XML copiado al portapapeles');
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+            });
+        }
+    </script>
+</body>
+</html>

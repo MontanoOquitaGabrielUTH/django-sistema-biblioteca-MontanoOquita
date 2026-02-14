@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplos SOAP - Sistema de Biblioteca</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2196f3 0%, #21cbf3 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .nav {
+            background: #f8f9fa;
+            padding: 15px 40px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 600;
+        }
+        .content { padding: 40px; }
+        .section { margin-bottom: 50px; }
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2196f3;
+        }
+        .soap-card {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .soap-card h3 {
+            color: #2196f3;
+            margin-bottom: 10px;
+        }
+        .endpoint {
+            background: #2d2d2d;
+            color: #4ec9b0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+            word-break: break-all;
+        }
+        .example {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .example h4 {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #dcdcdc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-size: 0.85em;
+        }
+        .description {
+            color: #666;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .btn {
+            background: linear-gradient(135deg, #2196f3 0%, #21cbf3 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧼 Ejemplos Servicio SOAP</h1>
+            <p>Guía completa con ejemplos prácticos de uso del Web Service SOAP</p>
+        </div>
+        
+        <div class="nav">
+           
+            <a href="GUIA_INSTALACION_COMPLETA.html">Volver a la Guía</a>
+            
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📋 ¿Qué es SOAP?</h2>
+                <div class="soap-card">
+                    <p class="description">
+                        <strong>SOAP</strong> (Simple Object Access Protocol) es un protocolo de mensajería basado en XML para intercambio de información estructurada en servicios web.
+                    </p>
+                    <p class="description">
+                        <strong>¿Para qué sirve?</strong> Permite integración con sistemas legacy, aplicaciones empresariales, y clientes que requieren contratos formales (WSDL).
+                    </p>
+                    <p class="description">
+                        <strong>Ventajas:</strong> Tipado fuerte, validación automática, soporte en múltiples lenguajes, estándares empresariales.
+                    </p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📄 WSDL - Descripción del Servicio</h2>
+                <div class="soap-card">
+                    <h3>Acceder al WSDL</h3>
+                    <div class="endpoint">GET http://127.0.0.1:8000/soap/?wsdl</div>
+                    <p class="description">
+                        <strong>¿Qué hace?</strong> Genera automáticamente el documento WSDL con la definición completa del servicio.
+                    </p>
+                    <p class="description">
+                        <strong>¿Qué contiene?</strong> Tipos de datos, mensajes, operaciones disponibles, y binding de transporte.
+                    </p>
+                    <div class="info-box">
+                        <strong>Herramientas para probar SOAP:</strong><br>
+                        • SoapUI - Cliente SOAP dedicado<br>
+                        • Postman - Soporte para SOAP desde v7.0<br>
+                        • Python con zeep o suds-jurko<br>
+                        • cURL - Línea de comandos
+                    </div>
+                    <a href="/soap/?wsdl" target="_blank" class="btn">🧪 Ver WSDL Completo</a>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📚 Operaciones Disponibles</h2>
+                
+                <div class="soap-card">
+                    <h3>1. obtener_libro - Consultar libro por ID</h3>
+                    <div class="endpoint">POST http://127.0.0.1:8000/soap/</div>
+                    <p class="description">
+                        <strong>¿Qué hace?</strong> Obtiene información completa de un libro específico por su ID.
+                    </p>
+                    <p class="description">
+                        <strong>¿Qué genera?</strong> XML con título, ISBN, autor, editorial, stock disponible y estado.
+                    </p>
+                    
+                    <div class="example">
+                        <h4>Request SOAP:</h4>
+                        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:tns="http://127.0.0.1:8000/soap/"&gt;
+    &lt;soap:Body&gt;
+        &lt;tns:obtener_libro&gt;
+            &lt;tns:libro_id&gt;1&lt;/tns:libro_id&gt;
+        &lt;/tns:obtener_libro&gt;
+    &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</pre>
+                    </div>
+                    
+                    <div class="example">
+                        <h4>Response SOAP (exitoso):</h4>
+                        <pre>&lt;soap:Envelope&gt;
+    &lt;soap:Body&gt;
+        &lt;obtener_libroResponse&gt;
+            &lt;libro&gt;
+                &lt;id&gt;1&lt;/id&gt;
+                &lt;titulo&gt;Cien años de soledad&lt;/titulo&gt;
+                &lt;isbn&gt;9780307474728&lt;/isbn&gt;
+                &lt;autor&gt;Gabriel García Márquez&lt;/autor&gt;
+                &lt;editorial&gt;Editorial Sudamericana&lt;/editorial&gt;
+                &lt;categoria&gt;Ficción&lt;/categoria&gt;
+                &lt;stock_disponible&gt;3&lt;/stock_disponible&gt;
+                &lt;estado&gt;disponible&lt;/estado&gt;
+            &lt;/libro&gt;
+        &lt;/obtener_libroResponse&gt;
+    &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</pre>
+                    </div>
+                </div>
+                
+                <div class="soap-card">
+                    <h3>2. listar_libros - Obtener todos los libros</h3>
+                    <div class="endpoint">POST http://127.0.0.1:8000/soap/</div>
+                    <p class="description">
+                        <strong>¿Qué hace?</strong> Lista todos los libros de la biblioteca.
+                    </p>
+                    <p class="description">
+                        <strong>¿Qué genera?</strong> Array XML con la información básica de cada libro.
+                    </p>
+                    
+                    <div class="example">
+                        <h4>Request SOAP:</h4>
+                        <pre>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:tns="http://127.0.0.1:8000/soap/"&gt;
+    &lt;soap:Body&gt;
+        &lt;tns:listar_libros /&gt;
+    &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</pre>
+                    </div>
+                    
+                    <div class="example">
+                        <h4>Response SOAP:</h4>
+                        <pre>&lt;soap:Envelope&gt;
+    &lt;soap:Body&gt;
+        &lt;listar_librosResponse&gt;
+            &lt;libros&gt;
+                &lt;libro&gt;
+                    &lt;id&gt;1&lt;/id&gt;
+                    &lt;titulo&gt;Cien años de soledad&lt;/titulo&gt;
+                    &lt;autor&gt;Gabriel García Márquez&lt;/autor&gt;
+                &lt;/libro&gt;
+                &lt;libro&gt;
+                    &lt;id&gt;2&lt;/id&gt;
+                    &lt;titulo&gt;El amor en los tiempos del cólera&lt;/titulo&gt;
+                    &lt;autor&gt;Gabriel García Márquez&lt;/autor&gt;
+                &lt;/libro&gt;
+            &lt;/libros&gt;
+        &lt;/listar_librosResponse&gt;
+    &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</pre>
+                    </div>
+                </div>
+                
+                <div class="soap-card">
+                    <h3>3. crear_prestamo - Registrar nuevo préstamo</h3>
+                    <div class="endpoint">POST http://127.0.0.1:8000/soap/</div>
+                    <p class="description">
+                        <strong>¿Qué hace?</strong> Crea un nuevo préstamo y actualiza el stock del libro automáticamente.
+                    </p>
+                    <p class="description">
+                        <strong>¿Qué genera?</strong> ID del préstamo creado y confirmación de éxito.
+                    </p>
+                    
+                    <div class="example">
+                        <h4>Request SOAP:</h4>
+                        <pre>&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:tns="http://127.0.0.1:8000/soap/"&gt;
+    &lt;soap:Body&gt;
+        &lt;tns:crear_prestamo&gt;
+            &lt;tns:libro_id&gt;3&lt;/tns:libro_id&gt;
+            &lt;tns:usuario_id&gt;2&lt;/tns:usuario_id&gt;
+            &lt;tns:dias&gt;14&lt;/tns:dias&gt;
+        &lt;/tns:crear_prestamo&gt;
+    &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</pre>
+                    </div>
+                    
+                    <div class="example">
+                        <h4>Response SOAP:</h4>
+                        <pre>&lt;soap:Envelope&gt;
+    &lt;soap:Body&gt;
+        &lt;crear_prestamoResponse&gt;
+            &lt;prestamo_id&gt;5&lt;/prestamo_id&gt;
+            &lt;mensaje&gt;Préstamo creado exitosamente&lt;/mensaje&gt;
+            &lt;fecha_devolucion&gt;2026-02-15&lt;/fecha_devolucion&gt;
+        &lt;/crear_prestamoResponse&gt;
+    &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</pre>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>Efectos automáticos:</strong><br>
+                        ✅ Reduce stock_disponible en 1<br>
+                        ✅ Cambia estado a "prestado" si stock = 0<br>
+                        ✅ Calcula fecha_devolucion_esperada<br>
+                        ✅ Registra fecha_prestamo actual
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🐍 Ejemplo con Python (zeep)</h2>
+                <div class="soap-card">
+                    <h3>Cliente SOAP en Python</h3>
+                    <p class="description">Usa la biblioteca <code>zeep</code> para consumir el servicio SOAP.</p>
+                    
+                    <div class="example">
+                        <h4>Instalación:</h4>
+                        <pre>pip install zeep</pre>
+                        
+                        <h4>Código Python:</h4>
+                        <pre>from zeep import Client
+
+# Conectar al servicio SOAP
+wsdl = 'http://127.0.0.1:8000/soap/?wsdl'
+client = Client(wsdl=wsdl)
+
+# 1. Obtener un libro
+libro = client.service.obtener_libro(libro_id=1)
+print(f"Libro: {libro['titulo']}")
+print(f"Stock: {libro['stock_disponible']}")
+
+# 2. Listar todos los libros
+libros = client.service.listar_libros()
+for libro in libros:
+    print(f"{libro['id']}: {libro['titulo']}")
+
+# 3. Crear un préstamo
+resultado = client.service.crear_prestamo(
+    libro_id=3,
+    usuario_id=2,
+    dias=14
+)
+print(f"Préstamo creado: ID {resultado['prestamo_id']}")</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>💡 Casos de Uso SOAP</h2>
+                
+                <div class="soap-card">
+                    <h3>Caso 1: Sistema externo consulta disponibilidad</h3>
+                    <p class="description">
+                        <strong>Escenario:</strong> Sistema de préstamos interbibliotecario consulta si un libro está disponible.
+                    </p>
+                    <div class="example">
+                        <h4>Flujo:</h4>
+                        <pre>1. Sistema externo llama obtener_libro(libro_id=1)
+2. Recibe XML con stock_disponible
+3. Si stock_disponible > 0, procede con el préstamo
+4. Llama crear_prestamo(libro_id=1, usuario_id=X, dias=14)
+5. Recibe confirmación y ID del préstamo</pre>
+                    </div>
+                </div>
+                
+                <div class="soap-card">
+                    <h3>Caso 2: Migración de datos desde sistema legacy</h3>
+                    <p class="description">
+                        <strong>Escenario:</strong> Importar catálogo completo desde otro sistema.
+                    </p>
+                    <div class="example">
+                        <h4>Proceso:</h4>
+                        <pre>1. Llamar listar_libros() para obtener catálogo actual
+2. Comparar con sistema legacy
+3. Identificar libros faltantes
+4. Crear registros para sincronizar</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🔧 Herramientas Recomendadas</h2>
+                <div class="soap-card">
+                    <div class="info-box">
+                        <strong>SoapUI:</strong> Cliente dedicado para testing SOAP<br>
+                        → Descarga: <a href="https://www.soapui.org/" target="_blank">soapui.org</a><br><br>
+                        
+                        <strong>Postman:</strong> Soporte SOAP desde v7.0<br>
+                        → Importa WSDL: http://127.0.0.1:8000/soap/?wsdl<br><br>
+                        
+                        <strong>Python zeep:</strong> pip install zeep<br>
+                        → Documentación: <a href="https://docs.python-zeep.org/" target="_blank">docs.python-zeep.org</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'},{'ap':'cpsh-oh'},{'server':'p3plzcpnl504927'},{'dcenter':'p3'},{'cp_id':'10837813'},{'cp_cl':'8'}) // Monitoring performance to make your website faster. If you want to opt-out, please contact web hosting support.</script><script src='https://img1.wsimg.com/traffic-assets/js/tccl.min.js'></script></html>

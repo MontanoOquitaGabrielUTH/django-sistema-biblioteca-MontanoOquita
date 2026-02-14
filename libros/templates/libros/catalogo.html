@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Catálogo - Biblioteca UTH{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 60px 0 40px;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    .page-header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    .page-header p {
+        font-size: 1.2em;
+        opacity: 0.95;
+    }
+    .catalogo-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+    .filters-sidebar {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+    }
+    .filters-sidebar h3 {
+        color: #667eea;
+        margin-bottom: 20px;
+        font-size: 1.3em;
+    }
+    .filter-group {
+        margin-bottom: 20px;
+    }
+    .filter-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 600;
+    }
+    .filter-group select {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: all 0.3s ease;
+    }
+    .filter-group select:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .catalogo-content {
+        min-height: 500px;
+    }
+    .libros-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    .libro-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+    .libro-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .libro-imagen {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .libro-placeholder {
+        font-size: 4em;
+        opacity: 0.8;
+    }
+    .libro-info {
+        padding: 20px;
+    }
+    .libro-info h3 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+        min-height: 50px;
+    }
+    .libro-autor {
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    .libro-editorial {
+        color: #999;
+        font-size: 0.9em;
+        margin-bottom: 15px;
+    }
+    .libro-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    .badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+    }
+    .badge-categoria {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+    .badge-disponible {
+        background: #e8f5e9;
+        color: #4caf50;
+    }
+    .badge-prestado {
+        background: #ffebee;
+        color: #f44336;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    .btn-sm {
+        padding: 8px 16px;
+        font-size: 0.9em;
+    }
+    .btn-primary {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 30px;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .pagination span {
+        color: #666;
+        font-weight: 600;
+    }
+    @media (max-width: 768px) {
+        .catalogo-layout {
+            grid-template-columns: 1fr;
+        }
+        .filters-sidebar {
+            position: static;
+        }
+        .libros-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+    }
+</style>
+
+<div class="page-header">
+    <div class="container">
+        <h1>📚 Catálogo de Libros</h1>
+        <p>Explora nuestra colección de {{ total_libros }} libros</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="catalogo-layout">
+        <aside class="filters-sidebar">
+            <h3>Filtros</h3>
+            <form method="get" id="filtros-form">
+                <div class="filter-group">
+                    <label>Categoría</label>
+                    <select name="categoria">
+                        <option value="">Todas</option>
+                        {% for cat in categorias %}
+                        <option value="{{ cat.id }}">{{ cat.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Autor</label>
+                    <select name="autor">
+                        <option value="">Todos</option>
+                        {% for autor in autores %}
+                        <option value="{{ autor.id }}">{{ autor.nombre_completo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Estado</label>
+                    <select name="estado">
+                        <option value="">Todos</option>
+                        <option value="disponible">Disponible</option>
+                        <option value="prestado">Prestado</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+            </form>
+        </aside>
+        
+        <div class="catalogo-content">
+            <div class="libros-grid">
+                {% for libro in libros %}
+                <div class="libro-card">
+                    <div class="libro-imagen">
+                        <div class="libro-placeholder">📖</div>
+                    </div>
+                    <div class="libro-info">
+                        <h3>{{ libro.titulo }}</h3>
+                        <p class="libro-autor">{{ libro.autor.nombre_completo }}</p>
+                        <p class="libro-editorial">{{ libro.editorial.nombre }}</p>
+                        <div class="libro-meta">
+                            <span class="badge badge-categoria">{{ libro.categoria.nombre }}</span>
+                            {% if libro.stock_disponible > 0 %}
+                                <span class="badge badge-disponible">Disponible ({{ libro.stock_disponible }})</span>
+                            {% else %}
+                                <span class="badge badge-prestado">No disponible</span>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'detalle_libro' libro.id %}" class="btn btn-sm">Ver Detalles</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No se encontraron libros con los filtros seleccionados.</p>
+                {% endfor %}
+            </div>
+            
+            {% if libros.has_other_pages %}
+            <div class="pagination">
+                {% if libros.has_previous %}
+                    <a href="?page=1" class="btn">Primera</a>
+                    <a href="?page={{ libros.previous_page_number }}" class="btn">Anterior</a>
+                {% endif %}
+                
+                <span>Página {{ libros.number }} de {{ libros.paginator.num_pages }}</span>
+                
+                {% if libros.has_next %}
+                    <a href="?page={{ libros.next_page_number }}" class="btn">Siguiente</a>
+                    <a href="?page={{ libros.paginator.num_pages }}" class="btn">Última</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

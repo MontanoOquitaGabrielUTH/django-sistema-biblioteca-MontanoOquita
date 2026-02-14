@@ -1,0 +1,525 @@
+{
+  "info": {
+    "_postman_id": "de31a4b9-bc55-4f80-9527-5a18ab0aadf4",
+    "name": "Biblioteca API - Rest",
+    "description": "Pruebas de API REST del sistema de bibliotecaEndFragment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52385727",
+    "_collection_link": "https://go.postman.co/collection/52385727-de31a4b9-bc55-4f80-9527-5a18ab0aadf4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET - Listar todos los libros",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Obtener libro por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/1/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Buscar libros por título",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/?search=soledad",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            ""
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "soledad",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT - Actualizar libro completo",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"titulo\": \"Cien años de soledad\",\r\n    \"isbn\": \"9780307474728\",\r\n    \"autor\": 1,\r\n    \"categoria\": 1,\r\n    \"editorial\": 1,\r\n    \"fecha_publicacion\": \"1967-05-30\",\r\n    \"numero_paginas\": 471,\r\n    \"idioma\": \"Español\",\r\n    \"descripcion\": \"Obra maestra del realismo mágico\",\r\n    \"stock_total\": 5,\r\n    \"stock_disponible\": 2,\r\n    \"estado\": \"disponible\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/1/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PATCH - Actualizar stock",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"stock_disponible\": 4,\r\n    \"estado\": \"disponible\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/1/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE - Eliminar libro",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/8/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            "8",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Listar todos los autores",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/autores/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "autores",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Crear nuevo libro",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"titulo\": \"El principito\",\r\n    \"isbn\": \"9788478887194\",\r\n    \"autor\": 1,\r\n    \"categoria\": 1,\r\n    \"editorial\": 1,\r\n    \"fecha_publicacion\": \"1943-04-06\",\r\n    \"numero_paginas\": 96,\r\n    \"idioma\": \"Español\",\r\n    \"descripcion\": \"Novela corta del escritor francés Antoine de Saint-Exupéry\",\r\n    \"stock_total\": 5,\r\n    \"stock_disponible\": 5,\r\n    \"estado\": \"disponible\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Obtener autor por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/autores/1",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "autores",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Crear nuevo autor",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Julio\",\r\n    \"apellido\": \"Cortázar\",\r\n    \"nombre_completo\": \"Julio Cortázar\",\r\n    \"nacionalidad\": \"Argentino\",\r\n    \"biografia\": \"\",\r\n    \"fecha_nacimiento\": \"1914-08-26\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/autores/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "autores",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Listar todas las categorias",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/categorias/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "categorias",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Crear una nueva categoria",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"nombre\": \"Comic\",\r\n            \"descripcion\": \"Obras donde la narrativa se apoya principalmente en la ilustración y el arte secuencial, más allá del texto.\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/categorias/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "categorias",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Listar todas las editoriales",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"nombre\": \"Comic\",\r\n            \"descripcion\": \"Obras donde la narrativa se apoya principalmente en la ilustración y el arte secuencial, más allá del texto.\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/editoriales/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "editoriales",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Listar todos los prestamos",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"nombre\": \"Comic\",\r\n            \"descripcion\": \"Obras donde la narrativa se apoya principalmente en la ilustración y el arte secuencial, más allá del texto.\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/prestamos/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "prestamos",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Crear nuevo prestamo",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"libro\": 3,\r\n            \"libro_titulo\": \"La casa de los espíritus\",\r\n            \"usuario\": 2,\r\n            \"usuario_nombre\": \"juan_perez\",\r\n            \"fecha_prestamo\": \"2026-02-13\",\r\n            \"fecha_devolucion_esperada\": \"2026-02-27\",\r\n            \"fecha_devolucion_real\": null,\r\n            \"estado\": \"activo\",\r\n            \"notas\": \"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/prestamos/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "prestamos",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Filtrar por categoria",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"nombre\": \"Comic\",\r\n            \"descripcion\": \"Obras donde la narrativa se apoya principalmente en la ilustración y el arte secuencial, más allá del texto.\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/?categoria=1",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            ""
+          ],
+          "query": [
+            {
+              "key": "categoria",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Filtrar por autor",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"nombre\": \"Comic\",\r\n            \"descripcion\": \"Obras donde la narrativa se apoya principalmente en la ilustración y el arte secuencial, más allá del texto.\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/libros/?autor=1",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "libros",
+            ""
+          ],
+          "query": [
+            {
+              "key": "autor",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

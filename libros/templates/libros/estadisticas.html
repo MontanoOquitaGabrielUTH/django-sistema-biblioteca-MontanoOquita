@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Estadísticas - Biblioteca UTH{% endblock %}
+
+{% block content %}
+<style>
+    .container h1 {
+        color: #333;
+        font-size: 2.5em;
+        margin: 40px 0 30px;
+        text-align: center;
+    }
+    .stats-dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+    .stat-card-large {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+    .stat-card-large:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .stat-card-large h3 {
+        color: #667eea;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e0e0e0;
+    }
+    .stats-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .stats-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    .stats-table th {
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 1em;
+    }
+    .stats-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+        color: #666;
+    }
+    .stats-table tbody tr {
+        transition: background 0.3s ease;
+    }
+    .stats-table tbody tr:hover {
+        background: #f8f9fa;
+    }
+    .chart-container {
+        position: relative;
+        height: 300px;
+        margin-top: 20px;
+    }
+    canvas {
+        max-height: 300px;
+    }
+    .stats-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .summary-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+    .summary-card .number {
+        font-size: 3em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .summary-card .label {
+        font-size: 1.1em;
+        opacity: 0.9;
+    }
+    @media (max-width: 768px) {
+        .stats-dashboard {
+            grid-template-columns: 1fr;
+        }
+        .container h1 {
+            font-size: 2em;
+        }
+    }
+</style>
+
+<div class="container">
+    <h1>📊 Estadísticas del Sistema</h1>
+    
+    <div class="stats-summary">
+        <div class="summary-card">
+            <div class="number">{{ total_libros|default:0 }}</div>
+            <div class="label">Libros Totales</div>
+        </div>
+        <div class="summary-card">
+            <div class="number">{{ prestamos_activos|default:0 }}</div>
+            <div class="label">Préstamos Activos</div>
+        </div>
+        <div class="summary-card">
+            <div class="number">{{ total_usuarios|default:0 }}</div>
+            <div class="label">Usuarios Activos</div>
+        </div>
+        <div class="summary-card">
+            <div class="number">{{ libros_disponibles|default:0 }}</div>
+            <div class="label">Libros Disponibles</div>
+        </div>
+    </div>
+    
+    <div class="stats-dashboard">
+        <div class="stat-card-large">
+            <h3>📚 Libros por Categoría</h3>
+            <div class="chart-container">
+                <canvas id="chart-categorias"></canvas>
+            </div>
+        </div>
+        
+        <div class="stat-card-large">
+            <h3>📈 Préstamos del Mes</h3>
+            <div class="chart-container">
+                <canvas id="chart-prestamos"></canvas>
+            </div>
+        </div>
+        
+        <div class="stat-card-large">
+            <h3>✍️ Autores Más Prestados</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Autor</th>
+                        <th>Préstamos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for autor in top_autores %}
+                    <tr>
+                        <td>{{ autor.nombre }}</td>
+                        <td><strong>{{ autor.total_prestamos }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="stat-card-large">
+            <h3>📖 Libros Más Populares</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Préstamos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for libro in top_libros %}
+                    <tr>
+                        <td>{{ libro.titulo }}</td>
+                        <td><strong>{{ libro.total_prestamos }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script>
+// Esperar a que Chart.js esté cargado
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar que tenemos los datos
+    const categoriasLabels = {{ categorias_labels|default:"[]"|safe }};
+    const categoriasData = {{ categorias_data|default:"[]"|safe }};
+    const prestamosLabels = {{ prestamos_labels|default:"[]"|safe }};
+    const prestamosData = {{ prestamos_data|default:"[]"|safe }};
+    
+    console.log('Datos de categorías:', categoriasLabels, categoriasData);
+    console.log('Datos de préstamos:', prestamosLabels, prestamosData);
+    
+    // Gráfico de Categorías
+    const ctxCategorias = document.getElementById('chart-categorias');
+    if (ctxCategorias && categoriasLabels.length > 0) {
+        new Chart(ctxCategorias.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: categoriasLabels,
+                datasets: [{
+                    data: categoriasData,
+                    backgroundColor: [
+                        '#667eea', '#764ba2', '#f093fb', '#4facfe',
+                        '#43e97b', '#fa709a', '#fee140', '#30cfd0'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    } else {
+        console.error('No hay datos para el gráfico de categorías');
+        if (ctxCategorias) {
+            ctxCategorias.parentElement.innerHTML = '<p style="text-align:center;padding:40px;color:#999;">No hay datos disponibles</p>';
+        }
+    }
+    
+    // Gráfico de Préstamos
+    const ctxPrestamos = document.getElementById('chart-prestamos');
+    if (ctxPrestamos && prestamosLabels.length > 0) {
+        new Chart(ctxPrestamos.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: prestamosLabels,
+                datasets: [{
+                    label: 'Préstamos',
+                    data: prestamosData,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        console.error('No hay datos para el gráfico de préstamos');
+        if (ctxPrestamos) {
+            ctxPrestamos.parentElement.innerHTML = '<p style="text-align:center;padding:40px;color:#999;">No hay datos disponibles</p>';
+        }
+    }
+});
+</script>
+{% endblock %}
+{% endblock %}

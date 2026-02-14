@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicio - Biblioteca UTH{% endblock %}
+
+{% block content %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 80px 20px;
+        text-align: center;
+        margin-bottom: 60px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    
+    .hero-section h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        animation: fadeInDown 0.8s ease;
+    }
+    
+    .hero-section p {
+        font-size: 1.4em;
+        margin-bottom: 40px;
+        opacity: 0.95;
+        animation: fadeInUp 0.8s ease;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeInUp 1s ease;
+    }
+    
+    .hero-buttons .btn {
+        padding: 15px 40px;
+        font-size: 1.1em;
+        min-width: 200px;
+    }
+    
+    .btn-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    }
+    
+    /* Stats Section */
+    .stats-section {
+        padding: 60px 20px;
+        background: white;
+        margin-bottom: 60px;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 30px;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+    
+    .stat-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+        animation: bounce 2s infinite;
+    }
+    
+    .stat-number {
+        font-size: 3.5em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .stat-label {
+        font-size: 1.2em;
+        opacity: 0.95;
+        font-weight: 500;
+    }
+    
+    /* Features Section */
+    .features-section {
+        padding: 60px 20px;
+        background: #f8f9fa;
+    }
+    
+    .features-section h2 {
+        text-align: center;
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 50px;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .feature-card {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        text-align: center;
+        transition: all 0.3s ease;
+        border-top: 4px solid #667eea;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    
+    .feature-card h3 {
+        color: #333;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    
+    .feature-card p {
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 25px;
+        font-size: 1.05em;
+    }
+    
+    .feature-card .btn {
+        display: inline-block;
+        margin-top: 10px;
+    }
+    
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-10px);
+        }
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 2em;
+        }
+        
+        .hero-section p {
+            font-size: 1.1em;
+        }
+        
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hero-buttons .btn {
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+        }
+        
+        .features-section h2 {
+            font-size: 2em;
+        }
+    }
+</style>
+
+<div class="hero-section">
+    <div class="container">
+        <h1>📚 Bienvenido a la Biblioteca Digital UTH</h1>
+        <p>Sistema completo de gestión con API REST y SOAP</p>
+        <div class="hero-buttons">
+            <a href="{% url 'catalogo' %}" class="btn btn-primary">Ver Catálogo</a>
+            <a href="{% url 'busqueda' %}" class="btn btn-secondary">Buscar Libros</a>
+        </div>
+    </div>
+</div>
+
+<div class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-number">{{ total_libros }}</div>
+                <div class="stat-label">Libros</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✍️</div>
+                <div class="stat-number">{{ total_autores }}</div>
+                <div class="stat-label">Autores</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-number">{{ prestamos_activos }}</div>
+                <div class="stat-label">Préstamos Activos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">{{ total_usuarios }}</div>
+                <div class="stat-label">Usuarios</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="container">
+        <h2>🚀 Características del Sistema</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🌐 API REST</h3>
+                <p>API RESTful completa con endpoints para todas las entidades. Soporta operaciones CRUD, filtrado, paginación y búsqueda avanzada.</p>
+                <a href="/api/" class="btn">Ver API</a>
+            </div>
+            <div class="feature-card">
+                <h3>🧼 Servicio SOAP</h3>
+                <p>Web Service SOAP con WSDL para integración empresarial. Compatible con múltiples lenguajes y plataformas.</p>
+                <a href="/soap/?wsdl" class="btn">Ver WSDL</a>
+            </div>
+            <div class="feature-card">
+                <h3>🔐 Panel Admin</h3>
+                <p>Interfaz administrativa completa de Django para gestionar libros, usuarios, préstamos y configuraciones.</p>
+                <a href="/admin/" class="btn">Acceder</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

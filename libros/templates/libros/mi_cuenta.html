@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mi Cuenta - {{ user.username }}{% endblock %}
+
+{% block content %}
+<style>
+    .cuenta-layout {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 30px;
+        margin: 40px 0;
+    }
+    .cuenta-sidebar {
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+    }
+    .perfil-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .perfil-avatar {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3em;
+        margin: 0 auto 20px;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+    }
+    .perfil-card h2 {
+        color: #333;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+    .perfil-card p {
+        color: #999;
+        font-size: 0.95em;
+    }
+    .cuenta-nav {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+    .cuenta-nav a {
+        display: block;
+        padding: 15px 20px;
+        color: #666;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+        transition: all 0.3s ease;
+    }
+    .cuenta-nav a:hover {
+        background: #f8f9fa;
+        border-left-color: #667eea;
+        color: #667eea;
+    }
+    .cuenta-nav a.active {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+        border-left-color: #667eea;
+        color: #667eea;
+        font-weight: 600;
+    }
+    .cuenta-content {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+    .cuenta-content h2 {
+        color: #333;
+        font-size: 2em;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e0e0e0;
+    }
+    .cuenta-content section {
+        margin-bottom: 50px;
+    }
+    .prestamos-list {
+        display: grid;
+        gap: 20px;
+    }
+    .prestamo-card {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 20px;
+        align-items: center;
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    .prestamo-card:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .prestamo-libro h4 {
+        color: #333;
+        margin-bottom: 5px;
+        font-size: 1.2em;
+    }
+    .prestamo-libro p {
+        color: #667eea;
+        font-weight: 600;
+    }
+    .prestamo-fechas p {
+        color: #666;
+        margin: 5px 0;
+        font-size: 0.95em;
+    }
+    .prestamo-fechas strong {
+        color: #333;
+    }
+    .badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+    .badge-danger {
+        background: #ffebee;
+        color: #f44336;
+    }
+    .prestamo-acciones {
+        text-align: right;
+    }
+    .historial-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .historial-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    .historial-table th {
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
+    .historial-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+        color: #666;
+    }
+    .historial-table tbody tr {
+        transition: background 0.3s ease;
+    }
+    .historial-table tbody tr:hover {
+        background: #f8f9fa;
+    }
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+    .empty-state p {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+    }
+    @media (max-width: 768px) {
+        .cuenta-layout {
+            grid-template-columns: 1fr;
+        }
+        .cuenta-sidebar {
+            position: static;
+        }
+        .prestamo-card {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="cuenta-layout">
+        <aside class="cuenta-sidebar">
+            <div class="perfil-card">
+                <div class="perfil-avatar">👤</div>
+                <h2>{{ user.get_full_name|default:user.username }}</h2>
+                <p>{{ user.email }}</p>
+            </div>
+            
+            <nav class="cuenta-nav">
+                <a href="#prestamos-activos" class="active">Préstamos Activos</a>
+                <a href="#historial">Historial</a>
+                <a href="#configuracion">Configuración</a>
+            </nav>
+        </aside>
+        
+        <div class="cuenta-content">
+            <section id="prestamos-activos">
+                <h2>📋 Préstamos Activos</h2>
+                {% if prestamos_activos %}
+                    <div class="prestamos-list">
+                        {% for prestamo in prestamos_activos %}
+                        <div class="prestamo-card">
+                            <div class="prestamo-libro">
+                                <h4>{{ prestamo.libro.titulo }}</h4>
+                                <p>{{ prestamo.libro.autor.nombre_completo }}</p>
+                            </div>
+                            <div class="prestamo-fechas">
+                                <p><strong>Prestado:</strong> {{ prestamo.fecha_prestamo|date:"d/m/Y" }}</p>
+                                <p><strong>Devolver antes:</strong> {{ prestamo.fecha_devolucion_esperada|date:"d/m/Y" }}</p>
+                                {% if prestamo.esta_vencido %}
+                                    <span class="badge badge-danger">⚠️ Vencido</span>
+                                {% endif %}
+                            </div>
+                            <div class="prestamo-acciones">
+                                <a href="{% url 'renovar_prestamo' prestamo.id %}" class="btn btn-sm">🔄 Renovar</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <p>📚 No tienes préstamos activos.</p>
+                        <a href="{% url 'catalogo' %}" class="btn btn-primary">Explorar Catálogo</a>
+                    </div>
+                {% endif %}
+            </section>
+            
+            <section id="historial">
+                <h2>📖 Historial de Préstamos</h2>
+                {% if historial_prestamos %}
+                    <table class="historial-table">
+                        <thead>
+                            <tr>
+                                <th>Libro</th>
+                                <th>Fecha Préstamo</th>
+                                <th>Fecha Devolución</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prestamo in historial_prestamos %}
+                            <tr>
+                                <td><strong>{{ prestamo.libro.titulo }}</strong></td>
+                                <td>{{ prestamo.fecha_prestamo|date:"d/m/Y" }}</td>
+                                <td>{{ prestamo.fecha_devolucion_real|default:"Pendiente"|date:"d/m/Y" }}</td>
+                                <td><span class="badge">{{ prestamo.estado }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="empty-state">
+                        <p>No tienes historial de préstamos.</p>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
